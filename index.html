@@ -119,11 +119,8 @@
       printBtn: document.getElementById('printBtn'),
       printPopupBtn: document.getElementById('printPopupBtn'),
       clearBtn: document.getElementById('clearBtn'),
-      qrImage: document.getElementById('qrImage')
     };
 
-    // Set QR path directly (GitHub Pages is case-sensitive)
-    els.qrImage.src = './whatsapp-group-qr-code.JPG?v=' + Date.now();
 
     const LS_KEY = 'minaar:postage:v1';
     function save(){
@@ -171,12 +168,6 @@
     els.printPopupBtn.addEventListener('click', ()=>{
       try{
         shrinkToFit();
-        const absoluteQR = els.qrImage && els.qrImage.src ? new URL(els.qrImage.src, location.href).href : '';
-        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Print</title>
-        <style>@page{size:100mm 150mm;margin:0}body{margin:0;display:grid;place-items:center}.label{width:100mm;height:150mm;overflow:hidden;break-inside:avoid-page;page-break-inside:avoid}.toValue{font-size:${getComputedStyle(document.documentElement).getPropertyValue('--valueSize').trim()}</style>
-        </head><body>${els.label.outerHTML.replace('id=\"qrImage\"','id=\"qrImage\" src=\"'+absoluteQR+'\"')}</body></html>`;
-        const w = window.open('', '_blank');
-        w.document.open(); w.document.write(html); w.document.close();
         w.focus(); setTimeout(()=>{ w.print(); w.close(); }, 400);
       }catch(e){ alert('Popup print error: ' + e.message); }
     });
